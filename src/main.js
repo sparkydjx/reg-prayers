@@ -102,6 +102,16 @@ function renderStep(step, lang, pageTitle) {
   const englishLines = prayer.text.split('\n')
   const latinLines = prayer.latinText.split('\n')
   if (lang === 'both' && englishLines.length > 1 && englishLines.length === latinLines.length) {
+    const hideLatinTitle = prayer.latinTitle === pageTitle || sameAsPage
+    const heading =
+      sameAsPage && hideLatinTitle
+        ? ''
+        : `
+          <div class="bilingual line">
+            <div>${sameAsPage ? '' : `<h2>${escapeHtml(prayer.title)}</h2>`}</div>
+            <div>${hideLatinTitle ? '' : `<h2>${escapeHtml(prayer.latinTitle)}</h2>`}</div>
+          </div>
+        `
     const rows = englishLines
       .map(
         (line, index) => `
@@ -112,7 +122,7 @@ function renderStep(step, lang, pageTitle) {
         `
       )
       .join('')
-    return `<section class="step lines">${rows}</section>`
+    return `<section class="step lines">${heading}${rows}</section>`
   }
   const english = prayerBlock(prayer.title, prayer.text, sameAsPage)
   const hideLatinTitle = prayer.latinTitle === pageTitle || (lang === 'both' && sameAsPage)
@@ -147,9 +157,12 @@ function mysteryControl(devotion) {
       `
     )
     .join('')
+  const detail = devotion.activeSet.note
+    ? devotion.activeSet.note
+    : `${devotion.activeSet.title}. Traditionally prayed on ${devotion.activeSet.days}.`
   return `
-    <div class="lang" role="group" aria-label="Mysteries">${buttons}</div>
-    <p class="days">${escapeHtml(devotion.activeSet.title)}. Traditionally prayed on ${escapeHtml(devotion.activeSet.days)}.</p>
+    <div class="lang" role="group" aria-label="${escapeHtml(devotion.setsLabel || 'Mysteries')}">${buttons}</div>
+    <p class="days">${escapeHtml(detail)}</p>
   `
 }
 
@@ -184,7 +197,7 @@ function renderDevotion(devotion) {
 
   app.querySelectorAll('[data-set]').forEach((button) => {
     button.addEventListener('click', () => {
-      location.hash = `rosary-${button.getAttribute('data-set')}`
+      location.hash = `${devotion.setBase}-${button.getAttribute('data-set')}`
     })
   })
 }

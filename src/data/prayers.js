@@ -20,6 +20,33 @@ export const prayers = {
     latinText:
       'Credo in Deum Patrem omnipotentem, Creatorem caeli et terrae, et in Iesum Christum, Filium eius unicum, Dominum nostrum, qui conceptus est de Spiritu Sancto, natus ex Maria Virgine, passus sub Pontio Pilato, crucifixus, mortuus, et sepultus; descendit ad inferos; tertia die resurrexit a mortuis; ascendit ad caelos, sedet ad dexteram Dei Patris omnipotentis; inde venturus est iudicare vivos et mortuos. Credo in Spiritum Sanctum, sanctam Ecclesiam catholicam, sanctorum communionem, remissionem peccatorum, carnis resurrectionem, vitam aeternam. Amen.'
   },
+  beatitudes: {
+    title: 'The Beatitudes',
+    text: 'Blessed are the poor in spirit: for theirs is the kingdom of heaven.\nBlessed are the meek: for they shall possess the land.\nBlessed are they that mourn: for they shall be comforted.\nBlessed are they that hunger and thirst after justice: for they shall have their fill.\nBlessed are the merciful: for they shall obtain mercy.\nBlessed are the clean of heart: for they shall see God.\nBlessed are the peacemakers: for they shall be called the children of God.\nBlessed are they that suffer persecution for justice\' sake: for theirs is the kingdom of heaven.',
+    latinTitle: 'Beatitudines',
+    latinText:
+      'Beati pauperes spiritu, quoniam ipsorum est regnum caelorum.\nBeati mites, quoniam ipsi possidebunt terram.\nBeati qui lugent, quoniam ipsi consolabuntur.\nBeati qui esuriunt et sitiunt iustitiam, quoniam ipsi saturabuntur.\nBeati misericordes, quoniam ipsi misericordiam consequentur.\nBeati mundo corde, quoniam ipsi Deum videbunt.\nBeati pacifici, quoniam filii Dei vocabuntur.\nBeati qui persecutionem patiuntur propter iustitiam, quoniam ipsorum est regnum caelorum.'
+  },
+  'precepts-of-the-church': {
+    title: 'The Six Precepts of the Church',
+    text: 'To hear Mass on Sundays and holy days of obligation, and to refrain from servile work.\nTo fast and abstain on the days appointed.\nTo confess our sins at least once a year.\nTo receive the Holy Eucharist at least during the Easter season.\nTo contribute to the support of the Church.\nTo observe the laws of the Church concerning marriage.',
+    latinTitle: 'Sex praecepta Ecclesiae',
+    latinText:
+      'Diebus Dominicis ceterisque festis de praecepto Missam audire et ab operibus servilibus vacare.\nDiebus ab Ecclesia statutis ab esu carnium abstinere et ieiunium servare.\nPeccata saltem semel in anno confiteri.\nSacramentum Eucharistiae saltem tempore paschali recipere.\nEcclesiae necessitatibus subvenire.\nLeges Ecclesiae de matrimonio servare.'
+  },
+  'deadly-sins': {
+    title: 'The Seven Deadly Sins',
+    text: 'Pride: an inordinate desire of one\'s own excellence.\nCovetousness: an inordinate desire of worldly goods.\nLust: an inordinate desire of carnal pleasure.\nAnger: an inordinate desire of revenge.\nGluttony: an inordinate desire of eating and drinking.\nEnvy: sadness at another\'s good.\nSloth: a weariness that neglects the love and service of God.',
+    latinTitle: 'Septem peccata capitalia',
+    latinText:
+      'Superbia: inordinatum propriae excellentiae desiderium.\nAvaritia: inordinatum bonorum temporalium desiderium.\nLuxuria: inordinatum carnalis voluptatis desiderium.\nIra: inordinatum vindictae desiderium.\nGula: inordinatum edendi bibendique desiderium.\nInvidia: tristitia de alieno bono.\nAcedia: taedium quod Dei amorem et servitium negligit.'
+  },
+  sacraments: {
+    title: 'The Seven Sacraments',
+    text: 'Baptism\nConfirmation\nHoly Eucharist\nPenance\nAnointing of the Sick\nHoly Orders\nMatrimony',
+    latinTitle: 'Septem sacramenta',
+    latinText: 'Baptismus\nConfirmatio\nSanctissima Eucharistia\nPaenitentia\nUnctio infirmorum\nOrdo\nMatrimonium'
+  },
   'mercy-opening': {
     title: 'Opening prayer',
     text: 'You expired, Jesus, but the source of life gushed forth for souls, and the ocean of mercy opened up for the whole world. O Fount of Life, unfathomable Divine Mercy, envelop the whole world and empty Yourself out upon us.',
@@ -236,6 +263,76 @@ export const prayers = {
     latinText:
       'Sancte Michael Archangele, defende nos in proelio; contra nequitiam et insidias diaboli esto praesidium. Imperet illi Deus, supplices deprecamur: tuque, Princeps militiae caelestis, Satanam aliosque spiritus malignos, qui ad perditionem animarum pervagantur in mundo, divina virtute in infernum detrude. Amen.'
   },
+  'souls-sunday': {
+    title: 'Sunday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Blood which Thy divine Son Jesus shed in the garden, deliver the souls in purgatory, and especially that soul amongst them all which is most destitute of spiritual aid; and vouchsafe to bring it to Thy glory, there to praise and bless Thee for ever. Amen.',
+    latinTitle: 'Dominica',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, quem divinus Filius tuus Iesus in horto effudit, libera animas in purgatorio, et praesertim illam inter omnes quae auxilio spirituali maxime destituta est; eamque ad gloriam tuam perducere dignare, ibi te in aeternum laudare et benedicere. Amen.'
+  },
+  'souls-monday': {
+    title: 'Monday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Blood which Thy divine Son Jesus shed in His cruel scourging, deliver the souls in purgatory, and especially that soul amongst them all which is nearest to its entrance into Thy glory, that so it may forthwith begin to praise and bless Thee for ever. Amen.',
+    latinTitle: 'Feria secunda',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, quem divinus Filius tuus Iesus in crudeli flagellatione sua effudit, libera animas in purgatorio, et praesertim illam inter omnes quae ingressui in gloriam tuam proxima est, ut mox te in aeternum laudare et benedicere incipiat. Amen.'
+  },
+  'souls-tuesday': {
+    title: 'Tuesday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Blood which Thy divine Son Jesus shed in His bitter crowning with thorns, deliver the souls in purgatory, and in particular that one amongst them all which would be the last to depart out of those pains, that it may not tarry so long a time before it come to praise Thee in Thy glory and bless Thee for ever. Amen.',
+    latinTitle: 'Feria tertia',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, quem divinus Filius tuus Iesus in amara coronatione spinarum effudit, libera animas in purgatorio, et illam praesertim inter omnes quae ultima ex illis poenis exitura esset, ne tam diu moretur antequam te in gloria tua laudet et in aeternum benedicat. Amen.'
+  },
+  'souls-wednesday': {
+    title: 'Wednesday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Blood which Thy divine Son Jesus shed in the streets of Jerusalem, when He carried the Cross upon His sacred shoulders, deliver the souls in purgatory, and especially that soul which is richest in merits before Thee, that so, in that throne of glory which awaits it, it may magnify Thee and bless Thee for ever. Amen.',
+    latinTitle: 'Feria quarta',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, quem divinus Filius tuus Iesus in plateis Ierusalem effudit, cum Crucem super sacros humeros suos portaret, libera animas in purgatorio, et praesertim illam animam quae meritis coram te ditissima est, ut in throno gloriae qui eam exspectat te magnificet et in aeternum benedicat. Amen.'
+  },
+  'souls-thursday': {
+    title: 'Thursday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Body and Blood of Thy divine Son Jesus, which He gave with His own hands upon the eve of His Passion to His beloved Apostles to be their meat and drink, and which He left to His whole Church to be a perpetual sacrifice and the life-giving food of His own faithful people, deliver the souls in purgatory, and especially that one which was most devoted to this mystery of infinite love, that it may with Thy divine Son, and with Thy Holy Spirit, ever praise Thee for Thy love therein in eternal glory. Amen.',
+    latinTitle: 'Feria quinta',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Corpus et Sanguinem divini Filii tui Iesu, quae ipse manibus suis in vigilia Passionis suae dilectis Apostolis suis in cibum et potum dedit, et quae universae Ecclesiae suae reliquit ut sacrificium perpetuum et cibus vitalis fidelium suorum essent, libera animas in purgatorio, et praesertim illam quae huic mysterio infiniti amoris maxime dedita fuit, ut cum Filio tuo divino et cum Spiritu Sancto tuo te pro amore tuo in eo in gloria aeterna semper laudet. Amen.'
+  },
+  'souls-friday': {
+    title: 'Friday',
+    text: 'O Lord God almighty, I pray Thee, by the Precious Blood which Thy divine Son shed on this day upon the wood of the Cross, especially from His most sacred hands and feet, deliver the souls in purgatory, and in particular that soul for which I am most bound to pray, that no neglect of mine may hinder it from praising Thee in Thy glory and blessing Thee for ever. Amen.',
+    latinTitle: 'Feria sexta',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, quem divinus Filius tuus hac die in ligno Crucis effudit, praesertim e manibus et pedibus eius sacratissimis, libera animas in purgatorio, et illam praesertim animam pro qua maxime orare teneor, ne ulla negligentia mea eam impediat quominus te in gloria tua laudet et in aeternum benedicat. Amen.'
+  },
+  'souls-saturday': {
+    title: 'Saturday',
+    text: 'O Lord God almighty, I beseech Thee by the Precious Blood which gushed forth from the side of Thy divine Son Jesus in the sight of, and to the extreme pain of His most holy Mother, deliver the souls in purgatory, and especially that one amongst them all which was ever the most devout to the holy Mother of God, that it may soon attain unto Thy glory, there to praise Thee in her and her in Thee, world without end. Amen.',
+    latinTitle: 'Sabbato',
+    latinText:
+      'Domine Deus omnipotens, obsecro te per pretiosum Sanguinem, qui e latere divini Filii tui Iesu profluxit in conspectu et in summo dolore sanctissimae Matris eius, libera animas in purgatorio, et praesertim illam inter omnes quae sanctae Dei Matri maxime devota fuit, ut cito ad gloriam tuam perveniat, ibi te in ea et eam in te laudatura in saecula saeculorum. Amen.'
+  },
+  'de-profundis': {
+    title: 'De Profundis',
+    text: 'Out of the depths I have cried unto Thee, O Lord: Lord, hear my voice.\nLet Thine ears be attentive to the voice of my supplication.\nIf Thou, O Lord, shalt mark iniquities: O Lord, who shall abide it?\nFor with Thee there is mercy: and by reason of Thy law I have waited for Thee, O Lord.\nMy soul hath relied on His word: my soul hath hoped in the Lord.\nFrom the morning watch even until night: let Israel hope in the Lord.\nFor with the Lord there is mercy: and with Him is plentiful redemption.\nAnd He shall redeem Israel from all his iniquities.',
+    latinTitle: 'De profundis',
+    latinText:
+      'De profundis clamavi ad te, Domine: Domine, exaudi vocem meam.\nFiant aures tuae intendentes in vocem deprecationis meae.\nSi iniquitates observaveris, Domine: Domine, quis sustinebit?\nQuia apud te propitiatio est, et propter legem tuam sustinui te, Domine.\nSustinuit anima mea in verbo eius: speravit anima mea in Domino.\nA custodia matutina usque ad noctem: speret Israel in Domino.\nQuia apud Dominum misericordia: et copiosa apud eum redemptio.\nEt ipse redimet Israel ex omnibus iniquitatibus eius.'
+  },
+  'souls-collect': {
+    title: 'Let us pray',
+    text: 'O God, the Creator and Redeemer of all the faithful, grant to the souls of Thy servants and handmaids the remission of all their sins, that by our pious supplications they may obtain the pardon they have always desired. Who livest and reignest, world without end. Amen.',
+    latinTitle: 'Oremus',
+    latinText:
+      'Fidelium, Deus, omnium conditor et redemptor, animabus famulorum famularumque tuarum remissionem cunctorum tribue peccatorum, ut indulgentiam, quam semper optaverunt, piis supplicationibus consequantur. Qui vivis et regnas in saecula saeculorum. Amen.'
+  },
+  'act-of-contrition': {
+    title: 'Act of Contrition',
+    text: 'O my God, I am heartily sorry for having offended Thee, and I detest all my sins because of Thy just punishments, but most of all because they offend Thee, my God, who art all-good and deserving of all my love. I firmly resolve, with the help of Thy grace, to sin no more and to avoid the near occasions of sin. Amen.',
+    latinTitle: 'Actus Contritionis',
+    latinText:
+      'Deus meus, ex toto corde paenitet me omnium meorum peccatorum, eaque detestor, quia peccando non solum poenas a te iuste statutas promeritus sum, sed praesertim quia offendi te, summum bonum, ac dignum qui super omnia diligaris. Ideo firmiter propono, adiuvante gratia tua, de cetero me non peccaturum peccandique occasiones proximas fugiturum. Amen.'
+  },
   'angelus-collect': {
     title: 'Let us pray',
     text: 'Pour forth, we beseech Thee, O Lord, Thy grace into our hearts; that we, to whom the Incarnation of Christ, Thy Son, was made known by the message of an angel, may by His Passion and Cross be brought to the glory of His Resurrection. Through the same Christ our Lord. Amen.',
@@ -352,6 +449,50 @@ export const devotions = [
       },
       { type: 'prayer', id: 'mercy-holy-god' },
       { type: 'prayer', id: 'mercy-closing' }
+    ]
+  },
+  {
+    id: 'act-of-contrition',
+    title: 'Act of Contrition',
+    steps: [{ type: 'prayer', id: 'act-of-contrition' }]
+  },
+  {
+    id: 'apostles-creed',
+    title: "The Apostles' Creed",
+    steps: [{ type: 'prayer', id: 'apostles-creed' }]
+  },
+  {
+    id: 'beatitudes',
+    title: 'The Beatitudes',
+    steps: [{ type: 'prayer', id: 'beatitudes' }]
+  },
+  {
+    id: 'precepts-of-the-church',
+    title: 'The Six Precepts of the Church',
+    steps: [{ type: 'prayer', id: 'precepts-of-the-church' }]
+  },
+  {
+    id: 'deadly-sins',
+    title: 'The Seven Deadly Sins',
+    steps: [
+      {
+        type: 'note',
+        text: 'Also called the seven capital sins, the chief sources of sin.',
+        latinText: 'Septem peccata capitalia quoque dicuntur, praecipui peccandi fontes.'
+      },
+      { type: 'prayer', id: 'deadly-sins' }
+    ]
+  },
+  {
+    id: 'sacraments',
+    title: 'The Seven Sacraments',
+    steps: [
+      {
+        type: 'note',
+        text: 'Outward signs instituted by Christ to give grace.',
+        latinText: 'Signa sensibilia, a Christo instituta, ad gratiam conferendam.'
+      },
+      { type: 'prayer', id: 'sacraments' }
     ]
   }
 ]
@@ -485,9 +626,83 @@ function buildRosary(setId) {
   return {
     id: `rosary-${set.id}`,
     title: 'Holy Rosary',
+    setBase: 'rosary',
     sets: mysterySets,
     activeSet: set,
     steps
+  }
+}
+
+const purgatoryDays = [
+  { id: 'sunday', label: 'Sunday', prayerId: 'souls-sunday' },
+  { id: 'monday', label: 'Monday', prayerId: 'souls-monday' },
+  { id: 'tuesday', label: 'Tuesday', prayerId: 'souls-tuesday' },
+  { id: 'wednesday', label: 'Wednesday', prayerId: 'souls-wednesday' },
+  { id: 'thursday', label: 'Thursday', prayerId: 'souls-thursday' },
+  { id: 'friday', label: 'Friday', prayerId: 'souls-friday' },
+  { id: 'saturday', label: 'Saturday', prayerId: 'souls-saturday' }
+]
+
+const purgatoryClosing = [
+  { type: 'prayer', id: 'our-father' },
+  { type: 'prayer', id: 'hail-mary' },
+  { type: 'prayer', id: 'de-profundis' },
+  {
+    type: 'dialogue',
+    leader: 'Eternal rest grant unto them, O Lord.',
+    response: 'And let perpetual light shine upon them.',
+    latinLeader: 'Requiem aeternam dona eis, Domine.',
+    latinResponse: 'Et lux perpetua luceat eis.'
+  },
+  {
+    type: 'dialogue',
+    leader: 'May they rest in peace.',
+    response: 'Amen.',
+    latinLeader: 'Requiescant in pace.',
+    latinResponse: 'Amen.'
+  },
+  {
+    type: 'dialogue',
+    leader: 'O Lord, hear my prayer.',
+    response: 'And let my cry come unto Thee.',
+    latinLeader: 'Domine, exaudi orationem meam.',
+    latinResponse: 'Et clamor meus ad te veniat.'
+  },
+  { type: 'prayer', id: 'souls-collect' },
+  {
+    type: 'dialogue',
+    leader: 'Eternal rest grant unto them, O Lord.',
+    response: 'And let perpetual light shine upon them.',
+    latinLeader: 'Requiem aeternam dona eis, Domine.',
+    latinResponse: 'Et lux perpetua luceat eis.'
+  },
+  {
+    type: 'dialogue',
+    leader: 'May they rest in peace.',
+    response: 'Amen.',
+    latinLeader: 'Requiescant in pace.',
+    latinResponse: 'Amen.'
+  }
+]
+
+/**
+ * @param {string} dayId
+ */
+function buildPurgatory(dayId) {
+  const day = purgatoryDays.find((item) => item.id === dayId)
+  if (!day) return undefined
+
+  return {
+    id: `purgatory-${day.id}`,
+    title: 'Prayers for the Souls in Purgatory',
+    setBase: 'purgatory',
+    setsLabel: 'Day',
+    sets: purgatoryDays,
+    activeSet: {
+      ...day,
+      note: `${day.label}. The Our Father, the Hail Mary, and the De Profundis follow this prayer.`
+    },
+    steps: [{ type: 'prayer', id: day.prayerId }, ...purgatoryClosing]
   }
 }
 
@@ -495,7 +710,11 @@ function buildRosary(setId) {
  * @returns {{ id: string, title: string }[]}
  */
 export function listDevotions() {
-  return [...devotions.map(({ id, title }) => ({ id, title })), { id: 'rosary', title: 'Holy Rosary' }]
+  return [
+    ...devotions.map(({ id, title }) => ({ id, title })),
+    { id: 'purgatory', title: 'Prayers for the Souls in Purgatory' },
+    { id: 'rosary', title: 'Holy Rosary' }
+  ]
 }
 
 /**
@@ -506,6 +725,10 @@ export function getDevotion(id) {
   if (id === 'rosary' || id.startsWith('rosary-')) {
     const setId = id === 'rosary' ? mysterySetForToday() : id.slice('rosary-'.length)
     return buildRosary(setId)
+  }
+  if (id === 'purgatory' || id.startsWith('purgatory-')) {
+    const dayId = id === 'purgatory' ? purgatoryDays[new Date().getDay()].id : id.slice('purgatory-'.length)
+    return buildPurgatory(dayId)
   }
   return devotions.find((devotion) => devotion.id === id)
 }
