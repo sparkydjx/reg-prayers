@@ -4,21 +4,22 @@
   --stone-mid: #445548;
   --stone-edge: #6a7a6c;
   --moss: #3d5c48;
-  --enamel: #1a4734;
+  --enamel: #0f2f22;
   --parchment: #d6c9a8;
   --parchment-lit: #e4d7b6;
   --parchment-shade: #c4b48e;
-  --ink: #1a1f1a;
-  --ink-soft: #3a433a;
-  --gold: #b08d3a;
+  --ink: #0c100c;
+  --ink-soft: #1a211a;
+  --gold: #8f7028;
   --gold-lit: #d4b45a;
-  --crimson: #6e2b2b;
+  --crimson: #5a1f1f;
   --rule: rgba(48, 58, 48, 0.28);
 
   font-family: 'Source Serif 4', 'Palatino Linotype', Palatino, serif;
+  font-size: 112.5%;
   color: var(--ink);
   background-color: var(--stone-deep);
-  line-height: 1.55;
+  line-height: 1.65;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -139,7 +140,7 @@ body::before {
 .brand-eyebrow {
   margin: 0;
   font-family: 'MedievalSharp', 'Cinzel', serif;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -149,11 +150,11 @@ body::before {
 h1 {
   margin: 0;
   font-family: 'MedievalSharp', 'Cinzel', 'Times New Roman', serif;
-  font-size: clamp(2rem, 5.5vw, 2.6rem);
+  font-size: clamp(2.15rem, 5.5vw, 2.75rem);
   font-weight: 400;
   letter-spacing: 0.03em;
   color: var(--enamel);
-  line-height: 1.15;
+  line-height: 1.2;
   position: relative;
   display: inline-block;
 }
@@ -170,9 +171,9 @@ h1::after {
 }
 
 h2 {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.4rem;
   font-family: 'Cinzel', 'Times New Roman', serif;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   color: var(--enamel);
@@ -180,7 +181,8 @@ h2 {
 
 p {
   margin: 0;
-  color: var(--ink-soft);
+  color: var(--ink);
+  font-size: 1.125rem;
 }
 
 .verse {
@@ -208,15 +210,15 @@ p {
 .prayer-list button {
   width: 100%;
   text-align: left;
-  padding: 0.95rem 1rem;
+  padding: 1rem 1.05rem;
   border: 1px solid var(--stone-mid);
   border-radius: 0.15rem;
   background:
     linear-gradient(180deg, rgba(228, 215, 182, 0.55), rgba(196, 180, 142, 0.4)),
     var(--parchment-shade);
-  color: var(--enamel);
+  color: var(--ink);
   font-family: 'Source Serif 4', 'Palatino Linotype', Palatino, serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   letter-spacing: 0.01em;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
@@ -238,13 +240,13 @@ p {
 
 .back {
   margin-bottom: 1rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.45rem 0.9rem;
   border: 1px solid var(--stone-mid);
   border-radius: 0.15rem;
   background: rgba(228, 215, 182, 0.65);
-  color: var(--enamel);
+  color: var(--ink);
   font-family: 'Cinzel', 'Times New Roman', serif;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   letter-spacing: 0.06em;
 }
 
@@ -258,13 +260,13 @@ p {
 .lang button {
   font: inherit;
   cursor: pointer;
-  padding: 0.4rem 0.8rem;
+  padding: 0.45rem 0.85rem;
   border: 1px solid var(--stone-mid);
   border-radius: 0.15rem;
   background: rgba(228, 215, 182, 0.55);
-  color: var(--enamel);
+  color: var(--ink);
   font-family: 'Cinzel', 'Times New Roman', serif;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   letter-spacing: 0.05em;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
@@ -290,9 +292,9 @@ p {
 
 .column-labels {
   margin-top: 1.25rem;
-  color: var(--moss);
+  color: var(--ink-soft);
   font-family: 'Cinzel', 'Times New Roman', serif;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -325,16 +327,17 @@ p {
 
 .note,
 .days {
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 .note {
   font-style: italic;
+  font-size: 1.1rem;
 }
 
 .days {
   margin: 0.75rem 0 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .section {
