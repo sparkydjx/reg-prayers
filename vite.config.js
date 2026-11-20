@@ -14,9 +14,9 @@ export default defineConfig({
       manifest: {
         name: 'Prayers',
         short_name: 'Prayers',
-        description: 'Prayers you can open offline',
-        theme_color: '#1f3a8a',
-        background_color: '#f8fafc',
+        description: 'Prayers from a Celtic abbey scriptorium, available offline',
+        theme_color: '#1a4734',
+        background_color: '#1e2822',
         display: 'standalone',
         orientation: 'portrait',
         start_url: './',

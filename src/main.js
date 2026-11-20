@@ -20,6 +20,17 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;')
 }
 
+function celticCrossMark() {
+  return `
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="28" r="18" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path fill="currentColor" d="M29 6h6v52h-6z"/>
+      <path fill="currentColor" d="M14 25h36v6H14z"/>
+      <circle cx="32" cy="28" r="5" fill="none" stroke="#b08d3a" stroke-width="2"/>
+    </svg>
+  `
+}
+
 function formatText(value) {
   return escapeHtml(value)
     .split('\n')
@@ -42,7 +53,11 @@ function renderHome() {
 
   app.innerHTML = `
     <main class="app">
-      <h1>Prayers</h1>
+      <header class="brand">
+        ${celticCrossMark()}
+        <p class="brand-eyebrow">Celtic Abbey · Anno Domini M</p>
+        <h1>Prayers</h1>
+      </header>
       <ul class="prayer-list">${items}</ul>
     </main>
   `
