@@ -1,15 +1,33 @@
 import './style.css'
 import { registerSW } from 'virtual:pwa-register'
-import { getDevotion, listDevotions, prayers } from './data/prayers.js'
+import {
+  categoryForDevotion,
+  getDevotion,
+  isSection,
+  listDevotions,
+  prayers,
+  sections
+} from './data/prayers.js'
 
 registerSW({ immediate: true })
 
 const app = document.querySelector('#app')
 const LANG_KEY = 'reg-prayers-lang'
+const SECTION_KEY = 'reg-prayers-section'
 
 function currentLang() {
   const saved = localStorage.getItem(LANG_KEY)
   return saved === 'la' || saved === 'both' ? saved : 'en'
+}
+
+/**
+ * @returns {import('./data/prayers.js').DevotionCategory}
+ */
+function currentSection() {
+  const hash = location.hash.replace(/^#/, '')
+  if (isSection(hash)) return hash
+  const saved = localStorage.getItem(SECTION_KEY)
+  return isSection(saved || '') ? /** @type {import('./data/prayers.js').DevotionCategory} */ (saved) : 'prayers'
 }
 
 function escapeHtml(value) {
@@ -38,8 +56,48 @@ function formatText(value) {
     .join('')
 }
 
-function renderHome() {
-  const items = listDevotions()
+function sectionLabel(sectionId) {
+  return sections.find((section) => section.id === sectionId)?.label || 'Prayers'
+}
+
+function tabNav(activeSection) {
+  const buttons = sections
+    .map(
+      (section) => `
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          data-section="${section.id}"
+          aria-selected="${section.id === activeSection}"
+        >
+          ${escapeHtml(section.label)}
+        </button>
+      `
+    )
+    .join('')
+
+  return `
+    <div class="tabs" role="tablist" aria-label="Library sections">
+      ${buttons}
+    </div>
+  `
+}
+
+function bindSectionTabs() {
+  app.querySelectorAll('[data-section]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const section = button.getAttribute('data-section')
+      localStorage.setItem(SECTION_KEY, section)
+      location.hash = section
+    })
+  })
+}
+
+function renderHome(sectionId = currentSection()) {
+  localStorage.setItem(SECTION_KEY, sectionId)
+  const title = sectionLabel(sectionId)
+  const items = listDevotions(sectionId)
     .map(
       (devotion) => `
         <li>
@@ -56,11 +114,14 @@ function renderHome() {
       <header class="brand">
         ${celticCrossMark()}
         <p class="brand-eyebrow">Celtic Abbey · Anno Domini M</p>
-        <h1>Prayers</h1>
+        <h1 class="brand-title">${escapeHtml(title)}</h1>
       </header>
-      <ul class="prayer-list">${items}</ul>
+      ${tabNav(sectionId)}
+      <ul class="prayer-list">${items || `<li class="empty">Nothing in this section yet.</li>`}</ul>
     </main>
   `
+
+  bindSectionTabs()
 
   app.querySelectorAll('[data-devotion]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -183,13 +244,17 @@ function mysteryControl(devotion) {
 
 function renderDevotion(devotion) {
   const lang = currentLang()
+  const sectionId = devotion.category || categoryForDevotion(devotion.id)
+  localStorage.setItem(SECTION_KEY, sectionId)
+  const backLabel = sectionLabel(sectionId)
   const columns =
     lang === 'both'
       ? `<div class="column-labels" aria-hidden="true"><span>English</span><span>Latin</span></div>`
       : ''
   app.innerHTML = `
     <main class="app${lang === 'both' ? ' app--both' : ''}">
-      <button type="button" class="back" id="back">Prayers</button>
+      <button type="button" class="back" id="back">${escapeHtml(backLabel)}</button>
+      ${tabNav(sectionId)}
       <h1>${escapeHtml(devotion.title)}</h1>
       ${mysteryControl(devotion)}
       ${languageControl(lang)}
@@ -199,9 +264,10 @@ function renderDevotion(devotion) {
   `
 
   document.querySelector('#back').addEventListener('click', () => {
-    history.pushState(null, '', location.pathname + location.search)
-    renderHome()
+    location.hash = sectionId
   })
+
+  bindSectionTabs()
 
   app.querySelectorAll('[data-lang]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -219,7 +285,11 @@ function renderDevotion(devotion) {
 
 function render() {
   const id = location.hash.replace(/^#/, '')
-  const devotion = id ? getDevotion(id) : undefined
+  if (!id || isSection(id)) {
+    renderHome(id && isSection(id) ? id : currentSection())
+    return
+  }
+  const devotion = getDevotion(id)
   if (devotion) {
     renderDevotion(devotion)
     return

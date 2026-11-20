@@ -350,10 +350,13 @@ export const prayers = {
  * @typedef {{ id: string, title: string, steps: Array<PrayerStep | DialogueStep | SectionStep | NoteStep> }} Devotion
  */
 
-/** @type {Devotion[]} */
+/** @typedef {'prayers' | 'rosary-chaplet' | 'literature'} DevotionCategory */
+
+/** @type {(Devotion & { category: DevotionCategory })[]} */
 export const devotions = [
   {
     id: 'angelus',
+    category: 'prayers',
     title: 'Angelus',
     steps: [
       { type: 'prayer', id: 'sign-of-the-cross' },
@@ -393,21 +396,25 @@ export const devotions = [
   },
   {
     id: 'saint-michael',
+    category: 'prayers',
     title: 'Prayer to Saint Michael the Archangel',
     steps: [{ type: 'prayer', id: 'saint-michael' }]
   },
   {
     id: 'anima-christi',
+    category: 'prayers',
     title: 'Anima Christi',
     steps: [{ type: 'prayer', id: 'anima-christi' }]
   },
   {
     id: 'padre-pio-after-communion',
+    category: 'prayers',
     title: 'Prayer of Saint Padre Pio after Communion',
     steps: [{ type: 'prayer', id: 'padre-pio-after-communion' }]
   },
   {
     id: 'divine-mercy',
+    category: 'rosary-chaplet',
     title: 'Divine Mercy Chaplet',
     steps: [
       {
@@ -453,26 +460,31 @@ export const devotions = [
   },
   {
     id: 'act-of-contrition',
+    category: 'prayers',
     title: 'Act of Contrition',
     steps: [{ type: 'prayer', id: 'act-of-contrition' }]
   },
   {
     id: 'apostles-creed',
+    category: 'literature',
     title: "The Apostles' Creed",
     steps: [{ type: 'prayer', id: 'apostles-creed' }]
   },
   {
     id: 'beatitudes',
+    category: 'literature',
     title: 'The Beatitudes',
     steps: [{ type: 'prayer', id: 'beatitudes' }]
   },
   {
     id: 'precepts-of-the-church',
+    category: 'literature',
     title: 'The Six Precepts of the Church',
     steps: [{ type: 'prayer', id: 'precepts-of-the-church' }]
   },
   {
     id: 'deadly-sins',
+    category: 'literature',
     title: 'The Seven Deadly Sins',
     steps: [
       {
@@ -485,6 +497,7 @@ export const devotions = [
   },
   {
     id: 'sacraments',
+    category: 'literature',
     title: 'The Seven Sacraments',
     steps: [
       {
@@ -625,6 +638,7 @@ function buildRosary(setId) {
 
   return {
     id: `rosary-${set.id}`,
+    category: 'rosary-chaplet',
     title: 'Holy Rosary',
     setBase: 'rosary',
     sets: mysterySets,
@@ -694,6 +708,7 @@ function buildPurgatory(dayId) {
 
   return {
     id: `purgatory-${day.id}`,
+    category: 'prayers',
     title: 'Prayers for the Souls in Purgatory',
     setBase: 'purgatory',
     setsLabel: 'Day',
@@ -706,15 +721,59 @@ function buildPurgatory(dayId) {
   }
 }
 
+/** @type {{ id: DevotionCategory, label: string }[]} */
+export const sections = [
+  { id: 'prayers', label: 'Prayers' },
+  { id: 'rosary-chaplet', label: 'Rosary / Chaplet' },
+  { id: 'literature', label: 'Literature' }
+]
+
 /**
- * @returns {{ id: string, title: string }[]}
+ * @param {string} id
+ * @returns {id is DevotionCategory}
  */
-export function listDevotions() {
-  return [
-    ...devotions.map(({ id, title }) => ({ id, title })),
-    { id: 'purgatory', title: 'Prayers for the Souls in Purgatory' },
-    { id: 'rosary', title: 'Holy Rosary' }
+export function isSection(id) {
+  return sections.some((section) => section.id === id)
+}
+
+/**
+ * @param {string} id
+ * @returns {DevotionCategory}
+ */
+export function categoryForDevotion(id) {
+  if (id === 'rosary' || id.startsWith('rosary-') || id === 'divine-mercy') {
+    return 'rosary-chaplet'
+  }
+  if (id === 'purgatory' || id.startsWith('purgatory-')) {
+    return 'prayers'
+  }
+  const found = devotions.find((devotion) => devotion.id === id)
+  return found?.category || 'prayers'
+}
+
+/**
+ * @param {DevotionCategory} [category]
+ * @returns {{ id: string, title: string, category: DevotionCategory }[]}
+ */
+export function listDevotions(category = 'prayers') {
+  const items = [
+    ...devotions.map(({ id, title, category: itemCategory }) => ({
+      id,
+      title,
+      category: itemCategory
+    })),
+    {
+      id: 'purgatory',
+      title: 'Prayers for the Souls in Purgatory',
+      category: /** @type {DevotionCategory} */ ('prayers')
+    },
+    {
+      id: 'rosary',
+      title: 'Holy Rosary',
+      category: /** @type {DevotionCategory} */ ('rosary-chaplet')
+    }
   ]
+  return items.filter((item) => item.category === category)
 }
 
 /**
