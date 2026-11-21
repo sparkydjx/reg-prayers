@@ -18,6 +18,20 @@ const sections = [
   { id: 'closing', label: 'Close', aria: 'Closing' }
 ]
 
+const rosaryCopy = {
+  group: 'Place in the rosary',
+  reset: 'Reset the rosary to the beginning',
+  doneKicker: 'Closing',
+  doneTitle: 'The Holy Rosary is complete'
+}
+
+const chapletCopy = {
+  group: 'Place in the chaplet',
+  reset: 'Reset the chaplet to the beginning',
+  doneKicker: 'Closing',
+  doneTitle: 'The Divine Mercy Chaplet is complete'
+}
+
 /** @type {{ move: (delta: number) => void, restart: () => void } | null} */
 let session = null
 
@@ -46,8 +60,26 @@ export function leaveRosary() {
  */
 export function mountRosary(root, devotion, lang) {
   const set = devotion.activeSet
-  const beads = buildBeads(set)
-  let index = loadIndex(set.id, beads.length)
+  mountSession(root, set.id, buildBeads(set), lang, rosaryCopy)
+}
+
+/**
+ * @param {HTMLElement} root
+ * @param {'en' | 'la' | 'both'} lang
+ */
+export function mountChaplet(root, lang) {
+  mountSession(root, 'divine-mercy', buildMercyBeads(), lang, chapletCopy)
+}
+
+/**
+ * @param {HTMLElement} root
+ * @param {string} placeId
+ * @param {Bead[]} beads
+ * @param {'en' | 'la' | 'both'} lang
+ * @param {{ group: string, reset: string, doneKicker: string, doneTitle: string }} copy
+ */
+function mountSession(root, placeId, beads, lang, copy) {
+  let index = loadIndex(placeId, beads.length)
 
   const api = {
     move(delta) {
@@ -70,13 +102,13 @@ export function mountRosary(root, devotion, lang) {
     const clamped = Math.min(beads.length, Math.max(0, next))
     if (clamped === index) return
     index = clamped
-    saveIndex(set.id, index)
+    saveIndex(placeId, index)
     draw()
   }
 
   function draw() {
     if (session !== api) return
-    root.innerHTML = markup(beads, index, lang)
+    root.innerHTML = markup(beads, index, lang, copy)
     bind()
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -180,12 +212,63 @@ function buildBeads(set) {
   return beads
 }
 
+function buildMercyBeads() {
+  /** @type {Bead[]} */
+  const beads = []
+  const push = (bead) => {
+    beads.push(bead)
+  }
+
+  push({ section: 'opening', prayerId: 'sign-of-the-cross', kind: 'cross' })
+  push({ section: 'opening', prayerId: 'mercy-opening', kind: 'opening' })
+  for (let repeat = 1; repeat <= 3; repeat += 1) {
+    push({
+      section: 'opening',
+      prayerId: 'mercy-blood-and-water',
+      kind: 'blood',
+      repeat,
+      repeatTotal: 3
+    })
+  }
+  push({ section: 'opening', prayerId: 'our-father', kind: 'our-father' })
+  push({ section: 'opening', prayerId: 'hail-mary', kind: 'hail-mary' })
+  push({ section: 'opening', prayerId: 'apostles-creed', kind: 'creed' })
+
+  for (let decade = 0; decade < 5; decade += 1) {
+    const section = `decade-${decade}`
+    push({ section, prayerId: 'mercy-eternal-father', kind: 'eternal-father', decade })
+    for (let repeat = 1; repeat <= 10; repeat += 1) {
+      push({
+        section,
+        prayerId: 'mercy-passion',
+        kind: 'passion',
+        decade,
+        repeat,
+        repeatTotal: 10
+      })
+    }
+  }
+
+  for (let repeat = 1; repeat <= 3; repeat += 1) {
+    push({
+      section: 'closing',
+      prayerId: 'mercy-holy-god',
+      kind: 'holy-god',
+      repeat,
+      repeatTotal: 3
+    })
+  }
+  push({ section: 'closing', prayerId: 'mercy-closing', kind: 'closing' })
+  return beads
+}
+
 /**
  * @param {Bead[]} beads
  * @param {number} index
  * @param {'en' | 'la' | 'both'} lang
+ * @param {{ group: string, reset: string, doneKicker: string, doneTitle: string }} copy
  */
-function markup(beads, index, lang) {
+function markup(beads, index, lang, copy) {
   const finished = index >= beads.length
   const bead = finished ? null : beads[index]
   const sectionId = bead?.section || 'closing'
@@ -212,7 +295,10 @@ function markup(beads, index, lang) {
       const count = item.repeat ? `, ${item.repeat} of ${item.repeatTotal}` : ''
       const current = position === index
       const done = position < index
-      const large = item.kind === 'our-father' || item.kind === 'creed' ? ' rosary-bead--large' : ''
+      const large =
+        item.kind === 'our-father' || item.kind === 'creed' || item.kind === 'eternal-father'
+          ? ' rosary-bead--large'
+          : ''
       const mark = item.kind === 'cross' ? '<span aria-hidden="true">†</span>' : ''
       return `
         <button
@@ -229,22 +315,17 @@ function markup(beads, index, lang) {
     })
     .join('')
 
-  const restart =
-    index > 0
-      ? `<button type="button" class="rosary-restart" data-rosary="restart">Begin again</button>`
-      : ''
-
   const nextLabel = finished ? 'Pray again' : index === beads.length - 1 ? 'Finish' : 'Next'
   const countLabel = bead ? barCount(bead, index, beads.length) : 'Amen'
 
   return `
     <div class="rosary" data-rosary-index="${index}">
-      <div class="lang rosary-sections" role="group" aria-label="Place in the rosary">${sectionButtons}</div>
+      <div class="lang rosary-sections" role="group" aria-label="${escapeHtml(copy.group)}">${sectionButtons}</div>
       <div class="rosary-beads" role="group" aria-label="${escapeHtml(sectionLabel(sectionId))}">${beadButtons}</div>
-      ${restart}
-      ${finished ? doneMarkup() : prayerMarkup(bead, lang)}
+      ${finished ? doneMarkup(copy) : prayerMarkup(bead, lang)}
       <div class="rosary-nav">
         <button type="button" data-rosary="prev"${index === 0 ? ' disabled' : ''}>Previous</button>
+        <button type="button" data-rosary="restart" aria-label="${escapeHtml(copy.reset)}"${index === 0 ? ' disabled' : ''}>Reset</button>
         <span class="rosary-count">${escapeHtml(countLabel)}</span>
         <button type="button" class="rosary-next" data-rosary="next">${nextLabel}</button>
       </div>
@@ -272,11 +353,14 @@ function prayerMarkup(bead, lang) {
   `
 }
 
-function doneMarkup() {
+/**
+ * @param {{ doneKicker: string, doneTitle: string }} copy
+ */
+function doneMarkup(copy) {
   return `
     <article class="rosary-done rosary-prayer" aria-live="polite">
-      <p class="rosary-kicker">Closing</p>
-      <h2>The Holy Rosary is complete</h2>
+      <p class="rosary-kicker">${escapeHtml(copy.doneKicker)}</p>
+      <h2>${escapeHtml(copy.doneTitle)}</h2>
     </article>
   `
 }
@@ -288,7 +372,9 @@ function kicker(bead) {
   if (bead.section === 'opening') {
     return bead.repeat ? `Opening · ${bead.repeat} of ${bead.repeatTotal}` : 'Opening'
   }
-  if (bead.section === 'closing') return 'Closing'
+  if (bead.section === 'closing') {
+    return bead.repeat ? `Closing · ${bead.repeat} of ${bead.repeatTotal}` : 'Closing'
+  }
   const decade = `Decade ${bead.decade + 1} of 5`
   return bead.repeat ? `${decade} · ${bead.repeat} of ${bead.repeatTotal}` : decade
 }
@@ -425,7 +511,7 @@ function readPlaces() {
  * @typedef {object} Bead
  * @property {string} section
  * @property {string} prayerId
- * @property {'cross' | 'creed' | 'our-father' | 'hail-mary' | 'glory' | 'fatima' | 'mystery' | 'closing'} kind
+ * @property {'cross' | 'creed' | 'our-father' | 'hail-mary' | 'glory' | 'fatima' | 'mystery' | 'closing' | 'opening' | 'blood' | 'eternal-father' | 'passion' | 'holy-god'} kind
  * @property {number} [decade]
  * @property {string} [mysteryId]
  * @property {number} [repeat]

@@ -8,7 +8,7 @@ import {
   prayers,
   sections
 } from './data/prayers.js'
-import { leaveRosary, mountRosary } from './rosary.js'
+import { leaveRosary, mountChaplet, mountRosary } from './rosary.js'
 
 registerSW({ immediate: true })
 
@@ -250,7 +250,9 @@ function renderDevotion(devotion) {
   const sectionId = devotion.category || categoryForDevotion(devotion.id)
   localStorage.setItem(SECTION_KEY, sectionId)
   const backLabel = sectionLabel(sectionId)
-  const interactive = devotion.id.startsWith('rosary-')
+  const rosary = devotion.id.startsWith('rosary-')
+  const chaplet = devotion.id === 'divine-mercy'
+  const interactive = rosary || chaplet
   const columns =
     lang === 'both'
       ? `<div class="column-labels" aria-hidden="true"><span>English</span><span>Latin</span></div>`
@@ -290,8 +292,9 @@ function renderDevotion(devotion) {
 
   if (interactive) {
     const rosaryRoot = app.querySelector('#rosary-root')
-    if (rosaryRoot instanceof HTMLElement && devotion.activeSet) {
-      mountRosary(rosaryRoot, devotion, lang)
+    if (rosaryRoot instanceof HTMLElement) {
+      if (chaplet) mountChaplet(rosaryRoot, lang)
+      else if (devotion.activeSet) mountRosary(rosaryRoot, devotion, lang)
     }
   }
 }

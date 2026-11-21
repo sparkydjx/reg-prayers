@@ -474,23 +474,9 @@ p {
 
 .rosary-bead:focus-visible,
 .rosary-nav button:focus-visible,
-.rosary-sections button:focus-visible,
-.rosary-restart:focus-visible {
+.rosary-sections button:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
-}
-
-.rosary-restart {
-  display: inline-block;
-  margin-top: 0.75rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--gold);
-  font-family: 'Cinzel', 'Times New Roman', serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  cursor: pointer;
 }
 
 .rosary-lang {
@@ -557,6 +543,7 @@ p {
   right: calc(max(1.25rem, 50% - 20rem) + 1.5rem);
   bottom: max(0.85rem, env(safe-area-inset-bottom));
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.55rem;
   margin-top: 0;
@@ -633,6 +620,23 @@ p {
 
   .rosary .bilingual h2 {
     overflow-wrap: normal;
+  }
+
+  .rosary-nav {
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    padding: 0.5rem;
+  }
+
+  .rosary-nav button {
+    padding: 0.55rem 0.45rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .rosary-count {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
   }
 }
 
