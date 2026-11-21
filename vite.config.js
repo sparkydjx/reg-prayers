@@ -9,7 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
       },
       manifest: {
         name: 'Prayers',

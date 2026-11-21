@@ -8,6 +8,7 @@ import {
   prayers,
   sections
 } from './data/prayers.js'
+import { leaveRosary, mountRosary } from './rosary.js'
 
 registerSW({ immediate: true })
 
@@ -95,6 +96,7 @@ function bindSectionTabs() {
 }
 
 function renderHome(sectionId = currentSection()) {
+  leaveRosary()
   localStorage.setItem(SECTION_KEY, sectionId)
   const title = sectionLabel(sectionId)
   const items = listDevotions(sectionId)
@@ -243,14 +245,19 @@ function mysteryControl(devotion) {
 }
 
 function renderDevotion(devotion) {
+  leaveRosary()
   const lang = currentLang()
   const sectionId = devotion.category || categoryForDevotion(devotion.id)
   localStorage.setItem(SECTION_KEY, sectionId)
   const backLabel = sectionLabel(sectionId)
+  const interactive = devotion.id.startsWith('rosary-')
   const columns =
     lang === 'both'
       ? `<div class="column-labels" aria-hidden="true"><span>English</span><span>Latin</span></div>`
       : ''
+  const body = interactive
+    ? '<div id="rosary-root"></div>'
+    : `${columns}${devotion.steps.map((step) => renderStep(step, lang, devotion.title)).join('')}`
   app.innerHTML = `
     <main class="app${lang === 'both' ? ' app--both' : ''}">
       <button type="button" class="back" id="back">${escapeHtml(backLabel)}</button>
@@ -258,8 +265,7 @@ function renderDevotion(devotion) {
       <h1>${escapeHtml(devotion.title)}</h1>
       ${mysteryControl(devotion)}
       ${languageControl(lang)}
-      ${columns}
-      ${devotion.steps.map((step) => renderStep(step, lang, devotion.title)).join('')}
+      ${body}
     </main>
   `
 
@@ -281,6 +287,13 @@ function renderDevotion(devotion) {
       location.hash = `${devotion.setBase}-${button.getAttribute('data-set')}`
     })
   })
+
+  if (interactive) {
+    const rosaryRoot = app.querySelector('#rosary-root')
+    if (rosaryRoot instanceof HTMLElement && devotion.activeSet) {
+      mountRosary(rosaryRoot, devotion, lang)
+    }
+  }
 }
 
 function render() {

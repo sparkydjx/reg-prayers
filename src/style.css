@@ -354,6 +354,14 @@ p {
   text-transform: uppercase;
 }
 
+.bilingual > div {
+  min-width: 0;
+}
+
+.bilingual h2 {
+  overflow-wrap: break-word;
+}
+
 .bilingual > div + div,
 .column-labels span + span {
   padding-left: 1.25rem;
@@ -400,6 +408,232 @@ p {
 
 .section h2 {
   color: var(--crimson);
+}
+
+.rosary-sections {
+  margin-top: 1rem;
+}
+
+.rosary-beads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.rosary-bead {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  padding: 0;
+  border: 1px solid var(--stone-mid);
+  border-radius: 50%;
+  background: rgba(228, 215, 182, 0.85);
+  color: var(--enamel);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.rosary-bead--large {
+  width: 2.7rem;
+  height: 2.7rem;
+}
+
+.rosary-bead[data-done='true'] {
+  background: var(--gold-lit);
+  border-color: var(--gold);
+}
+
+.rosary-bead[aria-current='step'] {
+  background: var(--enamel);
+  border-color: var(--gold);
+  color: var(--parchment-lit);
+  box-shadow: 0 0 0 3px rgba(176, 141, 58, 0.45);
+}
+
+.rosary-bead[data-kind='mystery']::after {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.rosary-bead[data-kind='mystery'][aria-current='step']::after {
+  background: var(--parchment-lit);
+}
+
+.rosary-bead[data-kind='mystery'][data-done='true']::after {
+  background: var(--enamel);
+}
+
+.rosary-bead:focus-visible,
+.rosary-nav button:focus-visible,
+.rosary-sections button:focus-visible,
+.rosary-restart:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.rosary-restart {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.rosary-lang {
+  margin: 0 0 0.35rem;
+  color: var(--ink-soft);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rosary-kicker {
+  margin: 1rem 0 0.35rem;
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.rosary-mystery {
+  margin: 0 0 0.35rem;
+  color: var(--enamel);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
+.rosary-mystery--latin {
+  margin-top: -0.15rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.rosary-intention {
+  margin: 0.35rem 0 0.6rem;
+  color: var(--crimson);
+  font-style: italic;
+}
+
+.rosary-prayer,
+.rosary-done {
+  scroll-margin-top: 0.75rem;
+}
+
+.rosary-prayer h2 {
+  margin-top: 0.2rem;
+}
+
+.rosary-prayer .column-labels {
+  margin-top: 0.8rem;
+}
+
+.rosary {
+  padding-bottom: 5.75rem;
+}
+
+.rosary-nav {
+  position: fixed;
+  z-index: 5;
+  left: calc(max(1.25rem, 50% - 20rem) + 1.5rem);
+  right: calc(max(1.25rem, 50% - 20rem) + 1.5rem);
+  bottom: max(0.85rem, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--gold);
+  border-radius: 0.15rem;
+  background-color: var(--parchment-lit);
+  background-image: linear-gradient(180deg, var(--parchment-lit), var(--parchment));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 22px rgba(8, 12, 10, 0.16);
+}
+
+.app--both .rosary-nav {
+  left: calc(max(1.25rem, 50% - 28rem) + 1.5rem);
+  right: calc(max(1.25rem, 50% - 28rem) + 1.5rem);
+}
+
+.rosary-nav button {
+  font: inherit;
+  cursor: pointer;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--stone-mid);
+  border-radius: 0.15rem;
+  background: rgba(228, 215, 182, 0.7);
+  color: var(--ink);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+.rosary-nav button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.rosary-count {
+  margin-left: auto;
+  color: var(--enamel);
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+}
+
+.rosary-nav .rosary-next {
+  background: var(--enamel);
+  border-color: var(--gold);
+  color: var(--parchment-lit);
+}
+
+.rosary-nav .rosary-next:hover {
+  background: #163d2d;
+}
+
+#rosary-root {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 42rem) {
+  .rosary .bilingual,
+  .rosary .column-labels {
+    grid-template-columns: 1fr;
+  }
+
+  .rosary .bilingual > div + div,
+  .rosary .column-labels span + span {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .rosary .bilingual h2 {
+    overflow-wrap: normal;
+  }
 }
 
 @keyframes sheet-rise {

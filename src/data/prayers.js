@@ -2,13 +2,13 @@
 export const prayers = {
   'sign-of-the-cross': {
     title: 'The Sign of the Cross',
-    text: 'In the name of the Father of the Son and of the Holy Spirit. Amen',
+    text: 'In the name of the Father, and of the Son, and of the Holy Spirit. Amen.',
     latinTitle: 'Signum Crucis',
     latinText: 'In nomine Patris, et Filii, et Spiritus Sancti. Amen.'
   },
   'our-father': {
     title: 'Our Father',
-    text: 'Our Father, who art in heaven, hallowed be Thy name: Thy kingdom come: Thy will be done on earth as it is in heaven. Give us this day our daily bread: and forgive us our trespasses as we forgive those who trespass against us. And do not lead us into temptation, but deliver us from the evil one.',
+    text: 'Our Father, who art in heaven, hallowed be Thy name: Thy kingdom come: Thy will be done on earth as it is in heaven. Give us this day our daily bread: and forgive us our trespasses as we forgive those who trespass against us. And do not lead us into temptation, but deliver us from the evil one. Amen.',
     latinTitle: 'Pater Noster',
     latinText:
       'Pater noster, qui es in caelis, sanctificetur nomen tuum. Adveniat regnum tuum, fiat voluntas tua, sicut in caelo, et in terra. Panem nostrum quotidianum da nobis hodie, et dimitte nobis debita nostra sicut et nos dimittimus debitoribus nostris. Et ne nos inducas in tentationem, sed libera nos a malo. Amen.'
@@ -117,7 +117,7 @@ export const prayers = {
   },
   'final-rosary-prayer': {
     title: 'Final Rosary Prayer',
-    text: '“O God whose only begotten Son by His Life has purchased for us the rewards of eternal life, Grant that we beseech Thee while meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may both imitate what they contain and obtain what they promise, through the same Christ our Lord Amen.”',
+    text: 'O God, whose only begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life: grant, we beseech Thee, that we who meditate upon these mysteries of the most holy Rosary of the Blessed Virgin Mary may imitate what they contain and obtain what they promise, through the same Christ our Lord. Amen.',
     latinTitle: 'Oratio finalis Rosarii',
     latinText:
       'Deus, cuius Unigenitus per vitam, mortem, et resurrectionem suam nobis salutis aeternae praemia comparavit: concede, quaesumus: ut haec mysteria sacratissimo beatae Mariae Virginis Rosario recolentes, et imitemur quod continent, et quod promittunt, assequamur, per eundem Christum Dominum nostrum. Amen.'
@@ -138,7 +138,7 @@ export const prayers = {
     title: 'Third Joyful Mystery — The Nativity',
     text: 'Jesus is born in Bethlehem.',
     latinTitle: 'Tertium Mysterium Gaudiosum — Nativitas',
-    latinText: 'Iesus nascitur Bethlehem.'
+    latinText: 'Iesus nascitur in Bethlehem.'
   },
   'mystery-joyful-4': {
     title: 'Fourth Joyful Mystery — The Presentation',
