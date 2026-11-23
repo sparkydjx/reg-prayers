@@ -604,6 +604,18 @@ p {
 }
 
 @media (max-width: 42rem) {
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tab {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
   .rosary .bilingual,
   .rosary .column-labels {
     grid-template-columns: 1fr;
