@@ -470,6 +470,7 @@ export const prayers = {
  */
 
 /** @typedef {'prayers' | 'litany' | 'rosary-chaplet' | 'literature'} DevotionCategory */
+/** @typedef {DevotionCategory | 'reminders'} AppSection */
 
 const soulsLitanyMercy = {
   response: 'My Jesus, mercy!',
@@ -1388,20 +1389,29 @@ function buildPurgatory(dayId) {
   }
 }
 
-/** @type {{ id: DevotionCategory, label: string }[]} */
+/** @type {{ id: AppSection, label: string }[]} */
 export const sections = [
   { id: 'prayers', label: 'Prayers' },
   { id: 'litany', label: 'Litany / Novena' },
   { id: 'rosary-chaplet', label: 'Rosary / Chaplet' },
-  { id: 'literature', label: 'Literature' }
+  { id: 'literature', label: 'Literature' },
+  { id: 'reminders', label: 'Reminders' }
 ]
+
+/**
+ * @param {string} id
+ * @returns {id is AppSection}
+ */
+export function isSection(id) {
+  return sections.some((section) => section.id === id)
+}
 
 /**
  * @param {string} id
  * @returns {id is DevotionCategory}
  */
-export function isSection(id) {
-  return sections.some((section) => section.id === id)
+export function isDevotionCategory(id) {
+  return id !== 'reminders' && isSection(id)
 }
 
 /**
