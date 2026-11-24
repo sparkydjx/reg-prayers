@@ -624,8 +624,10 @@ p {
 }
 
 .reminders-enable,
+.reminders-test,
 .reminders-save,
-.reminder-actions button {
+.reminder-actions button,
+.reminder-toast-dismiss {
   font: inherit;
   cursor: pointer;
   border-radius: 0.15rem;
@@ -633,12 +635,28 @@ p {
   letter-spacing: 0.05em;
 }
 
-.reminders-enable {
+.reminders-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
   margin-top: 0.85rem;
+}
+
+.reminders-enable,
+.reminders-test {
+  margin-top: 0;
   padding: 0.55rem 0.95rem;
   border: 1px solid var(--gold);
+}
+
+.reminders-enable {
   background: var(--enamel);
   color: var(--parchment-lit);
+}
+
+.reminders-test {
+  background: rgba(228, 215, 182, 0.55);
+  color: var(--enamel);
 }
 
 .reminders-form {
@@ -685,10 +703,56 @@ p {
 .reminders-form input:focus-visible,
 .reminders-form select:focus-visible,
 .reminders-enable:focus-visible,
+.reminders-test:focus-visible,
 .reminders-save:focus-visible,
-.reminder-actions button:focus-visible {
+.reminder-actions button:focus-visible,
+.reminder-toast-dismiss:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
+}
+
+.reminder-toast {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  padding-top: max(1.25rem, env(safe-area-inset-top));
+  background: rgba(14, 18, 15, 0.55);
+}
+
+.reminder-toast-card {
+  width: min(100%, 22rem);
+  padding: 1.15rem 1.2rem 1.05rem;
+  border: 2px solid var(--gold);
+  border-radius: 0.15rem;
+  background:
+    linear-gradient(180deg, rgba(228, 215, 182, 0.92), rgba(196, 180, 142, 0.95)),
+    var(--parchment);
+  box-shadow: 0 18px 40px rgba(8, 12, 10, 0.45);
+}
+
+.reminder-toast-title {
+  margin: 0;
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: var(--enamel);
+}
+
+.reminder-toast-body {
+  margin: 0.45rem 0 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.reminder-toast-dismiss {
+  margin-top: 1rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--gold);
+  background: var(--enamel);
+  color: var(--parchment-lit);
 }
 
 .reminders-error {
