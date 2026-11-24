@@ -7,9 +7,9 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg'],
+      includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg', 'reminder-chime.mp3'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2,mp3}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         importScripts: ['reminder-sw.js']
       },
