@@ -10,7 +10,8 @@ export default defineConfig({
       includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        importScripts: ['reminder-sw.js']
       },
       manifest: {
         name: 'Prayers',
