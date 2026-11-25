@@ -1,8 +1,8 @@
 const STORAGE_KEY = 'reg-prayers-reminders'
-const CHECK_MS = 30_000
+const CHECK_MS = 15_000
 const CHIME_URL = './reminder-chime.mp3'
 /** Soft pulse then a longer beat — readable as a prayer-bell tap on phone motors. */
-const VIBRATE_PATTERN = [120, 70, 120, 70, 260]
+const VIBRATE_PATTERN = [180, 90, 180, 90, 320]
 
 /** @type {Map<string, number>} */
 const localTimers = new Map()
@@ -12,6 +12,9 @@ let checkTimer = null
 
 /** @type {HTMLAudioElement | null} */
 let chimeAudio = null
+
+/** @type {AudioContext | null} */
+let chimeContext = null
 
 /**
  * @typedef {'once' | 'daily' | 'weekly'} ReminderRepeat
@@ -189,10 +192,22 @@ function getChimeAudio() {
   return chimeAudio
 }
 
+function getChimeContext() {
+  const Ctx = typeof window !== 'undefined' ? window.AudioContext || window.webkitAudioContext : null
+  if (!Ctx) return null
+  if (!chimeContext) chimeContext = new Ctx()
+  return chimeContext
+}
+
 /**
- * Warm up the chime during a user gesture so later reminders can play it.
+ * Warm up audio during a user gesture so later reminders can play a chime.
  */
 export function unlockReminderAudio() {
+  const context = getChimeContext()
+  if (context && context.state === 'suspended') {
+    context.resume().catch(() => {})
+  }
+
   const audio = getChimeAudio()
   if (!audio) return
   try {
@@ -225,16 +240,54 @@ function vibrateReminder() {
   }
 }
 
+/**
+ * Synthesized bell fallback when the mp3 cannot autoplay.
+ */
+function playSynthChime() {
+  const context = getChimeContext()
+  if (!context) return
+  const start = () => {
+    const now = context.currentTime
+    for (const [freq, delay, gain] of [
+      [880, 0, 0.22],
+      [1318.5, 0.08, 0.14],
+      [1760, 0.14, 0.08]
+    ]) {
+      const osc = context.createOscillator()
+      const amp = context.createGain()
+      osc.type = 'sine'
+      osc.frequency.value = freq
+      amp.gain.setValueAtTime(0.0001, now + delay)
+      amp.gain.exponentialRampToValueAtTime(gain, now + delay + 0.02)
+      amp.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.1)
+      osc.connect(amp)
+      amp.connect(context.destination)
+      osc.start(now + delay)
+      osc.stop(now + delay + 1.2)
+    }
+  }
+  if (context.state === 'suspended') {
+    context.resume().then(start).catch(() => {})
+  } else {
+    start()
+  }
+}
+
 function playReminderChime() {
   const audio = getChimeAudio()
-  if (!audio) return
+  if (!audio) {
+    playSynthChime()
+    return
+  }
   try {
     audio.muted = false
     audio.currentTime = 0
     const result = audio.play()
-    if (result && typeof result.catch === 'function') result.catch(() => {})
+    if (result && typeof result.then === 'function') {
+      result.catch(() => playSynthChime())
+    }
   } catch {
-    // Autoplay can still be blocked without a prior gesture.
+    playSynthChime()
   }
 }
 
@@ -248,17 +301,52 @@ function playReminderCue() {
 }
 
 /**
+ * Visible in-app banner — phone OS often hides notifications while this tab is focused.
+ * @param {string} title
+ * @param {string} body
+ */
+function showInAppReminderBanner(title, body) {
+  if (typeof document === 'undefined') return
+  document.getElementById('reminder-toast')?.remove()
+
+  const toast = document.createElement('div')
+  toast.id = 'reminder-toast'
+  toast.className = 'reminder-toast'
+  toast.setAttribute('role', 'alertdialog')
+  toast.setAttribute('aria-modal', 'true')
+  toast.setAttribute('aria-labelledby', 'reminder-toast-title')
+  toast.innerHTML = `
+    <div class="reminder-toast-card">
+      <p id="reminder-toast-title" class="reminder-toast-title"></p>
+      <p class="reminder-toast-body"></p>
+      <button type="button" class="reminder-toast-dismiss">Dismiss</button>
+    </div>
+  `
+  const titleEl = toast.querySelector('.reminder-toast-title')
+  const bodyEl = toast.querySelector('.reminder-toast-body')
+  if (titleEl) titleEl.textContent = title
+  if (bodyEl) bodyEl.textContent = body
+
+  const dismiss = () => toast.remove()
+  toast.querySelector('.reminder-toast-dismiss')?.addEventListener('click', dismiss)
+  toast.addEventListener('click', (event) => {
+    if (event.target === toast) dismiss()
+  })
+  document.body.appendChild(toast)
+}
+
+/**
  * @param {string} body
  * @param {string} tag
  * @param {string} reminderId
- * @param {{ silent?: boolean }} [options]
  */
-function notificationOptions(body, tag, reminderId, options = {}) {
+function notificationOptions(body, tag, reminderId) {
   return {
     body,
     tag,
     renotify: true,
-    silent: options.silent === true,
+    requireInteraction: true,
+    silent: false,
     vibrate: VIBRATE_PATTERN,
     // Supported on some Android browsers; ignored elsewhere.
     sound: CHIME_URL,
@@ -269,8 +357,26 @@ function notificationOptions(body, tag, reminderId, options = {}) {
 }
 
 /**
+ * Drop any pending/shown scheduled notification so the fired alert is the one you see.
+ * @param {string} id
+ */
+async function closeSchedNotifications(id) {
+  if (!('serviceWorker' in navigator)) return
+  try {
+    const registration = await navigator.serviceWorker.ready
+    if (!registration.getNotifications) return
+    const tags = new Set([id, `sched-${id}`])
+    const notifications = await registration.getNotifications(
+      supportsNotificationTriggers() ? { includeTriggered: true } : undefined
+    )
+    await Promise.all(notifications.filter((note) => tags.has(note.tag)).map((note) => note.close()))
+  } catch {
+    // Older browsers may reject includeTriggered.
+  }
+}
+
+/**
  * @param {Reminder} reminder
- * @param {{ forceImmediate?: boolean }} [options]
  */
 async function showReminderAlert(reminder) {
   const title = reminder.title || 'Prayer reminder'
@@ -278,13 +384,16 @@ async function showReminderAlert(reminder) {
   const tag = `fired-${reminder.id}`
   const pageOpen = typeof document !== 'undefined' && document.visibilityState === 'visible'
 
-  // Foreground path: play our chime and vibrate immediately.
-  if (pageOpen) playReminderCue()
+  // Always cue in the foreground — OS banners are unreliable while the app is focused.
+  if (pageOpen) {
+    playReminderCue()
+    showInAppReminderBanner(title, body)
+  }
 
   if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
     try {
-      // When the page already chimed, silence the system tone to avoid stacking sounds.
-      const options = notificationOptions(body, tag, reminder.id, { silent: pageOpen })
+      await closeSchedNotifications(reminder.id)
+      const options = notificationOptions(body, tag, reminder.id)
       if ('serviceWorker' in navigator) {
         const registration = await navigator.serviceWorker.ready
         await registration.showNotification(title, options)
@@ -293,16 +402,18 @@ async function showReminderAlert(reminder) {
       new Notification(title, options)
       return
     } catch {
-      // Fall through to in-app alert.
+      // Fall through — in-app banner already shown when visible.
     }
   }
 
-  if (pageOpen) {
+  if (pageOpen && !document.getElementById('reminder-toast')) {
     window.alert(`${title}\n\n${body}`)
   }
 }
 
 /**
+ * Only treat an already-displayed *fired* notification as shown.
+ * Pending `sched-*` TimestampTrigger entries must not suppress the alert.
  * @param {string} id
  */
 async function hasActiveNotification(id) {
@@ -310,9 +421,9 @@ async function hasActiveNotification(id) {
   try {
     const registration = await navigator.serviceWorker.ready
     if (!registration.getNotifications) return false
-    const tags = reminderTags(id)
+    const firedTag = `fired-${id}`
     const notifications = await registration.getNotifications()
-    return notifications.some((note) => tags.has(note.tag))
+    return notifications.some((note) => note.tag === firedTag)
   } catch {
     return false
   }
@@ -340,6 +451,8 @@ async function scheduleReminder(reminder) {
     return
   }
 
+  // Best-effort background schedule. Notification Triggers are flaky, so we also
+  // always keep a local timer / poll so the reminder still fires while the app is open.
   if (
     supportsNotificationTriggers() &&
     typeof Notification !== 'undefined' &&
@@ -354,14 +467,11 @@ async function scheduleReminder(reminder) {
         ...notificationOptions(body, `sched-${reminder.id}`, reminder.id),
         showTrigger: new window.TimestampTrigger(when)
       })
-      // Background trigger is scheduled; skip the foreground timer to avoid double alerts.
-      return
     } catch {
-      // Fall back to local timer.
+      // Fall through to the local timer below.
     }
   }
 
-  // Foreground timer fallback while the app is open (or when triggers are unavailable).
   const capped = Math.min(delay, 2_147_000_000)
   const handle = window.setTimeout(() => {
     localTimers.delete(reminder.id)
@@ -516,6 +626,19 @@ function permissionCopy(permission) {
   return 'Allow notifications so reminders can alert your phone.'
 }
 
+/** Fire a sample alert so the phone’s sound, vibration, and banner can be verified. */
+export async function testReminderAlert() {
+  unlockReminderAudio()
+  await showReminderAlert({
+    id: 'test',
+    title: 'Prayer reminder',
+    note: 'This is a test chime and vibration.',
+    at: Date.now(),
+    repeat: 'once',
+    enabled: true
+  })
+}
+
 /**
  * @param {HTMLElement} root
  * @param {{ onChanged?: () => void }} [options]
@@ -535,11 +658,14 @@ export async function mountReminders(root, options = {}) {
       <section class="reminders" aria-label="Reminders">
         <p class="reminders-lead">Set a time to pray, and this app can alert your phone.</p>
         <p class="reminders-status" data-reminders="status">${escapeHtml(permissionCopy(permission))}</p>
-        ${
-          permission === 'default'
-            ? `<button type="button" class="reminders-enable" data-reminders="enable">Allow phone alerts</button>`
-            : ''
-        }
+        <div class="reminders-actions-row">
+          ${
+            permission === 'default'
+              ? `<button type="button" class="reminders-enable" data-reminders="enable">Allow phone alerts</button>`
+              : ''
+          }
+          <button type="button" class="reminders-test" data-reminders="test">Test alert now</button>
+        </div>
         <form class="reminders-form" data-reminders="form">
           <label>
             <span>Reminder</span>
@@ -628,6 +754,14 @@ function bind(root, redraw, onChanged) {
     await rescheduleAllReminders()
     await redraw()
     onChanged?.()
+  })
+
+  const test = root.querySelector('[data-reminders="test"]')
+  test?.addEventListener('click', async () => {
+    unlockReminderAudio()
+    const permission = await notificationPermission()
+    if (permission === 'default') await requestNotificationPermission()
+    await testReminderAlert()
   })
 
   const form = root.querySelector('[data-reminders="form"]')
