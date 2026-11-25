@@ -7,11 +7,10 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg', 'reminder-chime.mp3'],
+      includeAssets: ['favicon.svg', 'icon.svg', 'icon-maskable.svg'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2,mp3}'],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
-        importScripts: ['reminder-sw.js']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024
       },
       manifest: {
         name: 'Prayers',

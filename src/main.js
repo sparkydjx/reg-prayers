@@ -9,10 +9,8 @@ import {
   sections
 } from './data/prayers.js'
 import { leaveRosary, mountChaplet, mountRosary } from './rosary.js'
-import { mountReminders, startReminderWatch } from './reminders.js'
 
 registerSW({ immediate: true })
-startReminderWatch()
 
 const app = document.querySelector('#app')
 const LANG_KEY = 'reg-prayers-lang'
@@ -101,24 +99,6 @@ function renderHome(sectionId = currentSection()) {
   leaveRosary()
   localStorage.setItem(SECTION_KEY, sectionId)
   const title = sectionLabel(sectionId)
-
-  if (sectionId === 'reminders') {
-    app.innerHTML = `
-      <main class="app">
-        <header class="brand">
-          ${celticCrossMark()}
-          <p class="brand-eyebrow">Celtic Abbey · Anno Domini M</p>
-          <h1 class="brand-title">${escapeHtml(title)}</h1>
-        </header>
-        ${tabNav(sectionId)}
-        <div id="reminders-root"></div>
-      </main>
-    `
-    bindSectionTabs()
-    const remindersRoot = app.querySelector('#reminders-root')
-    if (remindersRoot instanceof HTMLElement) mountReminders(remindersRoot)
-    return
-  }
 
   const items = listDevotions(sectionId)
     .map(
