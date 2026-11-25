@@ -470,7 +470,7 @@ export const prayers = {
  */
 
 /** @typedef {'prayers' | 'litany' | 'rosary-chaplet' | 'literature'} DevotionCategory */
-/** @typedef {DevotionCategory | 'reminders'} AppSection */
+/** @typedef {DevotionCategory} AppSection */
 
 const soulsLitanyMercy = {
   response: 'My Jesus, mercy!',
@@ -1394,8 +1394,7 @@ export const sections = [
   { id: 'prayers', label: 'Prayers' },
   { id: 'litany', label: 'Litany / Novena' },
   { id: 'rosary-chaplet', label: 'Rosary / Chaplet' },
-  { id: 'literature', label: 'Literature' },
-  { id: 'reminders', label: 'Reminders' }
+  { id: 'literature', label: 'Literature' }
 ]
 
 /**
@@ -1411,7 +1410,7 @@ export function isSection(id) {
  * @returns {id is DevotionCategory}
  */
 export function isDevotionCategory(id) {
-  return id !== 'reminders' && isSection(id)
+  return isSection(id)
 }
 
 /**
