@@ -150,6 +150,13 @@ export const prayers = {
     latinText:
       'Domine Iesu, dimitte nobis debita nostra, salva nos ab igne inferni; perduc in caelum omnes animas, praesertim eas, quae misericordiae tuae maxime indigent.\n(Our Lady at Fatima, 13th July 1917)'
   },
+  'fatima-pardon-prayer': {
+    title: "Fatima's Pardon Prayer",
+    text: '“My God, I believe, I adore, I hope and I love You! I ask pardon of You for those who do not believe, do not adore, do not hope and do not love You!”\n(Angel of Peace at Fatima, Spring 1916)',
+    latinTitle: 'Oratio veniae Fatimae',
+    latinText:
+      'Deus meus, credo, adoro, spero et amo Te! Veniam peto a Te pro iis qui non credunt, non adorant, non sperant et non amant Te!\n(Angel of Peace at Fatima, Spring 1916)'
+  },
   'hail-holy-queen': {
     title: 'Hail Holy Queen',
     text: 'Hail, holy Queen, Mother of Mercy! our life, our sweetness, and our hope! To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley, of tears. Turn, then, most gracious Advocate, thine eyes of mercy toward us; and after this our exile show unto us the blessed fruit of thy womb, Jesus; O clement, O loving, O sweet Virgin Mary. Pray for us, O Holy Mother of God, that we may be made worthy of the promises of Christ.',
@@ -956,6 +963,19 @@ export const devotions = [
     category: 'prayers',
     title: 'Act of Contrition',
     steps: [{ type: 'prayer', id: 'act-of-contrition' }]
+  },
+  {
+    id: 'fatima-pardon-prayer',
+    category: 'prayers',
+    title: "Fatima's Pardon Prayer",
+    steps: [
+      {
+        type: 'note',
+        text: 'Taught by the Angel of Peace to the three shepherd children of Fatima. Traditionally said three times.',
+        latinText: 'Ab Angelo Pacis tribus pastoribus Fatimae tradita. More solito ter dicitur.'
+      },
+      { type: 'prayer', id: 'fatima-pardon-prayer' }
+    ]
   },
   {
     id: 'penitential-act-a',
